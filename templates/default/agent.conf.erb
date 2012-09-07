@@ -3,7 +3,7 @@
 # Manual changes will be lost
 input {
 
-  <% if  node['logstash']['agent']['inputs'].empty? -%>
+  <% if !node['logstash']['agent'].has_key?('inputs') || node['logstash']['agent']['inputs'].empty? -%>
   file {
     type => "sample-logs"
     path => ["/var/log/*.log"]
@@ -32,7 +32,7 @@ output {
   null { }
   <% else -%>
 
-    <% unless  node['logstash']['agent']['outputs'].empty? -%>
+    <% unless (!node['logstash']['agent'].has_key?('outputs') || node['logstash']['agent']['outputs'].empty?) -%>
       <% node['logstash']['agent']['outputs'].each do |output| -%>
         <% output.each do |name,hash| -%> 
            <%= name %> {
